@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    produk
+    {{kategori.name}}
+{% endblock %}
+
+{% block content %}    
+<div id="sidebar">
+        <h3>Categories</h3>
+        <ul>
+            <!-- home url -->
+        <li class="selected">
+        <a href="{% url 'home' %}">All</a> 
+        </li>
+        <!-- kategori dan kategori url -->
+        {% for c in kategori %}
+        <li class="selected">
+        <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+        </li>
+        {% endfor %}
+        <!-- end kategori dan kategori url -->
+        </ul>
+        </div>
+        <div id="main" class="product-list">
+        <h1>Products</h1>
+        
+        <!-- looping produk -->
+        {% for products in produk %}
+        <div class="item">
+        <a href="{{ products.get_absolute_url }}">
+        <img  src="{{products.image_product.url}}">
+        </a>
+        <br>
+        <a href="{{ products.get_absolute_url }}">{{products.name}}</a>
+        <br>
+        Rp{{products.harga}}
+    </div>
+    {% endfor %}
+    <!-- endloop produk -->
+    </div>
+    {% endblock %}
+    
