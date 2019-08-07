@@ -11,12 +11,12 @@
         <ul>
             <!-- home url -->
         <li class="selected">
-        <a href="{% url 'home' %}">All</a> 
+        <a href="{% url 'menu:home' %}">All</a> 
         </li>
         <!-- kategori dan kategori url -->
-        {% for c in kategori %}
+        {% for cat in kategoris %}
         <li class="selected">
-        <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+        <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
         </li>
         {% endfor %}
         <!-- end kategori dan kategori url -->
@@ -39,5 +39,15 @@
     {% endfor %}
     <!-- endloop produk -->
     </div>
+<!-- CODE MENGELUARKAN SEMUA LIST DALAM CATEGORY -->
+{% regroup produk by category as products_by_category %}
+{% for c in products_by_category %}
+<h1 ><a href="{{ c.get_absolute_url }}">{{c.grouper}}</a></h1>
+<ul>
+  {% for p in c.list %}
+    <li><a href="{{p.get_absolute_url}}">{{p.name}}</a></li>
+  {% endfor %}
+</ul>
+{% endfor %}
     {% endblock %}
-    
+    <!--* END CODE MENGELUARKAN SEMUA LIST DALAM CATEGORY* -->

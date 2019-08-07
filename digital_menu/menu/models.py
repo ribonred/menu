@@ -2,10 +2,11 @@ from django.db import models
 from django.urls import reverse
 
 # kategori
-class category(models.Model):
+class Category(models.Model):
     name =  models.CharField(
         max_length = 80,
-        db_index = True
+        db_index = True,
+        null=True
     )
     slug = models.SlugField(
         max_length=100,
@@ -17,15 +18,16 @@ class category(models.Model):
         verbose_name_plural = ('categories')
     def __str__(self):
         return self.name
-    # def get_absolute_url(self):
-    #     url_slug={'slug':self.slug}
-    #     return reverse("product_category", kwargs=url_slug)
+    def get_absolute_url(self):
+        url_slug = {'slug':self.slug}
+        return reverse("menu:product_category", kwargs=url_slug)
     
 #model Product
 class product(models.Model):
-    category = models.ForeignKey(category,
+    category = models.ForeignKey(Category,
      related_name='products', 
-     on_delete=models.CASCADE
+     on_delete=models.CASCADE,
+     null=True
      )
     name = models.CharField(max_length=255,db_index = True)
     slug = models.SlugField(max_length=255, db_index = True)
@@ -41,7 +43,7 @@ class product(models.Model):
     
     def get_absolute_url(self):
         url_slug = {'slug':self.slug}
-        return reverse("product_detail", kwargs=url_slug)
+        return reverse("menu:product_detail", kwargs=url_slug)
 
     def __str__(self):
         return self.name
