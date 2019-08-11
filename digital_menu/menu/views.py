@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, reverse
 from .models import product,Category
 
 class productlist(ListView):
-    template_name = "home.html"
+    template_name = "index.html"
     context_object_name = 'produk' #context temmplate
     
     def get_queryset(self):
@@ -14,7 +14,7 @@ class productlist(ListView):
         return queryset #overide context dengan object product terfilter
     def get_context_data(self, **kwargs):
         context = super(productlist, self).get_context_data(**kwargs)
-        context['kategoris'] = Category.objects.all() #penambahan model category
+        context['kategoris'] = Category.objects.all()  #penambahan model category
         return context
     
 class produkdetail(DetailView):
