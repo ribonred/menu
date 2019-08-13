@@ -25,7 +25,7 @@
             <p class="card-text"></p>
             </div>
             <div class="card-body">
-            <form action="add/{{product.id}}/" method="post" class="card-link">
+            <form action="{% url 'menu:addtocart' product.id %}" method="post" class="card-link">
                     {{ jumlah_form }}
                     {% csrf_token %}
                     <input type="submit" value="Pesan">

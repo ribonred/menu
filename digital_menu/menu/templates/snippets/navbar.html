@@ -5,17 +5,19 @@
 </button>
     <a class="navbar-brand" href="#" style="margin: auto;">{{title}}</a>
 <div class="dropdown">
-    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Keranjang
+    <button class="btn btn-warning">
+        {% with total_items=cart|length %}
+        {% if cart|length > 0 %}
+        Keranjang:
+        <a href="{% url 'menu:cart_detail' %}">
+        {{ total_items }} Pesanan{{ total_items|pluralize }},
+        Rp. {{ cart.get_total_harga }}
+        </a>
+        {% else %}
+        Keranjang kosong
+        {% endif %}
+        {% endwith %}
     </button>
-    <div class="dropdown-menu dropdown-menu-right">
-    <p>
-        Some example text that's free-flowing within the dropdown menu.
-    </p>
-    <p class="mb-0">
-        And this is more example text.
-    </p>
-    </div>
 </div>
 </nav>
 <div class="sidenav bg-dark border border-top-0 border-warning" id="navButton">
