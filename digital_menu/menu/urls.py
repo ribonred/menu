@@ -11,7 +11,7 @@ urlpatterns = [
     path("", productlist.as_view(), name="home"),
     path("<slug:slug>/", productlist.as_view(), name="product_category"),
     url(r'^detail/(?P<slug>[\w-]+)$',produkdetail.as_view(), name='product_detail'),
-    path("cart/", cart_detail, name='cart_detail'),
-    path("add/<int:Product_id>/", cart_add, name='cart_add'),
+    path("cart", cart_detail, name='cart_detail'),
+    path("add/<int:Product_id>/", cart_add, name="addtocart"),
     path("remove/<int:Product_id>/", cart_remove, name="cart_remove"),
 ]
