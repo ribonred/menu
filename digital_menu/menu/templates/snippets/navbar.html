@@ -1,0 +1,33 @@
+{% load static %}
+<nav class="navbar navbar-dark bg-dark fixed-top">
+<button class="btn btn-outline-warning" type="button" id="navButton">
+    <span class="navbar-toggler-icon"></span>MENU
+</button>
+    <a class="navbar-brand" href="#" style="margin: auto;">{{title}}</a>
+<div class="dropdown">
+    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Keranjang
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+    <p>
+        Some example text that's free-flowing within the dropdown menu.
+    </p>
+    <p class="mb-0">
+        And this is more example text.
+    </p>
+    </div>
+</div>
+</nav>
+<div class="sidenav bg-dark border border-top-0 border-warning" id="navButton">
+<ul class="list-unstyled">
+    <li class="nav-item" id="navButton">
+        <a class="nav-link" href="/">All Products</a>
+    </li>
+    {% for category in kategoris %}
+    <li class="nav-item">
+        <a class="nav-link" href={{category.get_absolute_url}}>{{category.name}}</a>
+    </li>
+    {% endfor %}
+        
+</ul>
+</div>
