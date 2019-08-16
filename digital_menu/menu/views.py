@@ -4,10 +4,12 @@ from django.views.decorators.http import require_POST
 from .cart import Cart
 from .forms import formtambahproduk
 from .models import product,Category
+from django.contrib import messages
 
 class productlist(ListView):
     template_name = "index.html"
     context_object_name = 'Product' #context temmplate
+    paginate_by = 2 #berapa object yang di tampilkan
     
     def get_queryset(self):
         queryset = product.objects.all() #overide context dengan model product
@@ -23,7 +25,7 @@ class productlist(ListView):
     
 class produkdetail(DetailView):
     model = product
-    template_name = 'detail.html'
+    template_name = 'snippets/prodetail.html'
     slug_field = 'slug'
     context_object_name = 'produk'
     
@@ -40,16 +42,17 @@ def cart_add(request, Product_id):
     if form.is_valid():
         cd = form.cleaned_data
         cart.tambah_produk(Product=Product, quantity=cd['quantity'], update_quantity=cd['update'])
-    return redirect('menu:cart_detail')
+        messages.success(request, 'Menu di tambahkan ke keranjang')
+        return redirect('menu:home')
 
 def cart_remove(request, Product_id):
     cart = Cart(request)
     Product = get_object_or_404(product, id=Product_id)
     cart.remove(Product)
-    return redirect('menu:cart_detail')
+    return redirect('menu:home')
 
 
 def cart_detail(request):
     cart = Cart(request)
-    return render(request, 'cart.html', {'cart':cart})
+    return ({'cart':cart})
 
