@@ -5,16 +5,16 @@
 </button>
     <a class="navbar-brand" href="#" style="margin: auto;">{{title}}</a>
 <div class="dropdown">
-    <button class="btn btn-warning">
+    <button class="btn btn-outline-warning" data-toggle="modal" data-target="#CartModal">
         {% with total_items=cart|length %}
         {% if cart|length > 0 %}
-        Keranjang:
-        <a href="{% url 'menu:cart_detail' %}">
-        {{ total_items }} Pesanan{{ total_items|pluralize }},
-        Rp. {{ cart.get_total_harga }}
+       <i class="fas fa-shopping-cart"></i>
+       <a href="{% url 'menu:cart_detail' %}">
+           {{ total_items }} Pesanan{{ total_items|pluralize }},
+           Rp. {{ cart.get_total_harga }}
         </a>
         {% else %}
-        Keranjang kosong
+        <i class="fas fa-shopping-cart"></i>
         {% endif %}
         {% endwith %}
     </button>
@@ -33,3 +33,33 @@
         
 </ul>
 </div>
+
+<!-- Modal Cart -->
+<div class="modal fade" id="CartModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your Shopping Cart</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    Add list product from databases
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue Shopping</button>
+                <button type="button" class="btn btn-primary">Checkout</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#exampleModal').on('show.bs.modal', event => {
+        var button = $(event.relatedTarget);
+        var modal = $(this);
+    });
+</script>
