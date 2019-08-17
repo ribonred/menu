@@ -5,14 +5,12 @@
 </button>
     <a class="navbar-brand" href="#" style="margin: auto;">{{title}}</a>
 <div class="dropdown">
-    <button class="btn btn-outline-warning" data-toggle="modal" data-target="#CartModal">
+     <button id="carts" class="btn btn-outline-warning" data-toggle="modal" data-target="#CartModal" href="{% url 'menu:cart_detail' %}" >
         {% with total_items=cart|length %}
         {% if cart|length > 0 %}
        <i class="fas fa-shopping-cart"></i>
-       <a href="{% url 'menu:cart_detail' %}">
-           {{ total_items }} Pesanan{{ total_items|pluralize }},
-           Rp. {{ cart.get_total_harga }}
-        </a>
+           <span class="badge badge-warning">{{ total_items }}</span>
+        
         {% else %}
         <i class="fas fa-shopping-cart"></i>
         {% endif %}
@@ -44,11 +42,47 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                 </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    Add list product from databases
-                </div>
-            </div>
+                <div class="modal-body">
+                        <div class="container-fluid">
+                            {% if cart %}
+                             
+                           
+                                <table class="cart">
+                                        <thead>
+                                        <tr>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Remove</th>
+                                        <th>Unit price</th>
+                                        <th>Price</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for item in cart %}
+                                        {% with Product=item.Product %}
+                                        <tr>
+                                        <td>{{ Product.name }}</td>
+                                        <td>{{ item.quantity }}</td>
+                                        <td><a href="/remove/{{Product.id}}/">Remove</a></td>
+                                        <td class="num">Rp. {{ item.price }}</td>
+                                        <td class="num">Rp. {{ item.total_price }}</td>
+                                        </tr>
+                                        {% endwith %}
+                                        {% endfor %}
+                                        <tr class="total">
+                                        <td>Total</td>
+                                        <td colspan="4"></td>
+                                        <td class="num">Rp. {{ cart.get_total_harga}}</td>
+                                        </tr>
+                                        </tbody>
+                                        </table>
+                                        {% else %}
+                                        <h6>keranjang kosong</h6>
+                                        {% endif %}
+                            </div>
+                                   
+                    </div>
+                
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue Shopping</button>
                 <button type="button" class="btn btn-primary">Checkout</button>
@@ -56,10 +90,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $('#exampleModal').on('show.bs.modal', event => {
-        var button = $(event.relatedTarget);
-        var modal = $(this);
-    });
-</script>

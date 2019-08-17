@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'menu',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,4 @@ STATICFILES_DIRS = [
 ]
 
 CART_SESSION_ID = 'menu'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
