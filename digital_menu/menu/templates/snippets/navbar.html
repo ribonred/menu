@@ -5,7 +5,7 @@
 </button>
     <a class="navbar-brand" href="#" style="margin: auto;">{{title}}</a>
 <div class="dropdown">
-     <button id="carts" class="btn btn-outline-warning" data-toggle="modal" data-target="#CartModal" href="{% url 'menu:cart_detail' %}" >
+     <button id="carts" class="btn btn-outline-warning" data-toggle="modal" data-target="#CartModal" href="" >
         {% with total_items=cart|length %}
         {% if cart|length > 0 %}
        <i class="fas fa-shopping-cart"></i>
@@ -34,7 +34,7 @@
 
 <!-- Modal Cart -->
 <div class="modal fade" id="CartModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="min-width:70%;">
         <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Your Shopping Cart</h5>
@@ -47,32 +47,34 @@
                             {% if cart %}
                              
                            
-                                <table class="cart">
-                                        <thead>
+                                <table class="table table-striped">
+                                        <thead class="thead-dark">
                                         <tr>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Remove</th>
-                                        <th>Unit price</th>
-                                        <th>Price</th>
+                                            <th scope="col">No</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Unit Price</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Total Price</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {% for item in cart %}
                                         {% with Product=item.Product %}
                                         <tr>
-                                        <td>{{ Product.name }}</td>
-                                        <td>{{ item.quantity }}</td>
-                                        <td><a href="/remove/{{Product.id}}/">Remove</a></td>
-                                        <td class="num">Rp. {{ item.price }}</td>
-                                        <td class="num">Rp. {{ item.total_price }}</td>
+                                        <th scope="row">{{ Product.id }}</th>
+                                        <th>{{ Product.name }}</th>
+                                        <th class="num">Rp {{ item.price }}</th>
+                                        <th>{{ item.quantity }}</th>
+                                        <th class="num">Rp {{ item.total_price }}</th>
+                                        <th><a href="/remove/{{Product.id}}/" class="badge badge-danger">remove</a></th>
                                         </tr>
                                         {% endwith %}
                                         {% endfor %}
                                         <tr class="total">
-                                        <td>Total</td>
-                                        <td colspan="4"></td>
-                                        <td class="num">Rp. {{ cart.get_total_harga}}</td>
+                                        <th>Total</th>
+                                        <th colspan="4"></th>
+                                        <th class="num">Rp. {{ cart.get_total_harga}}</th>
                                         </tr>
                                         </tbody>
                                         </table>
