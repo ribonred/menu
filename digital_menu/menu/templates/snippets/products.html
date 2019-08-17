@@ -61,8 +61,8 @@
 </div>
 <!-- Modal Product -->
 <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+    <div class="modal-dialog" role="document" style="min-width: 50%;">
+        <div class="modal-content" id="konten">
 
         </div>
     </div>
@@ -79,7 +79,7 @@
       $('#{{a.slug}}').click(function(e) {
         e.preventDefault();
         var url = $(this).attr('data-href');
-        $('.modal-content').load(url);
+        $('#konten').load(url);
       });
     });
   </script>

@@ -5,7 +5,7 @@
 </button>
     <a class="navbar-brand" href="#" style="margin: auto;">{{title}}</a>
 <div class="dropdown">
-     <button id="carts" class="btn btn-outline-warning" data-toggle="modal" data-target="#CartModal" href="" >
+     <button id="carts" class="btn btn-outline-warning" data-toggle="modal" data-target="#CartModal">
         {% with total_items=cart|length %}
         {% if cart|length > 0 %}
        <i class="fas fa-shopping-cart"></i>
@@ -45,7 +45,6 @@
                 <div class="modal-body">
                         <div class="container-fluid">
                             {% if cart %}
-                             
                            
                                 <table class="table table-striped">
                                         <thead class="thead-dark">
@@ -65,7 +64,15 @@
                                         <th scope="row">{{ Product.id }}</th>
                                         <th>{{ Product.name }}</th>
                                         <th class="num">Rp {{ item.price }}</th>
-                                        <th>{{ item.quantity }}</th>
+                                        <th class="m-auto">
+                                        <a href="" class="badge badge-danger">    
+                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                        </a>
+                                        <input class="m-auto" style="width:40px;" type="text" value="{{ item.quantity }}"/>
+                                        <a href="" class="badge badge-success">    
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </a>
+                                        </th>
                                         <th class="num">Rp {{ item.total_price }}</th>
                                         <th><a href="/remove/{{Product.id}}/" class="badge badge-danger">remove</a></th>
                                         </tr>
@@ -79,7 +86,7 @@
                                         </tbody>
                                         </table>
                                         {% else %}
-                                        <h6>keranjang kosong</h6>
+                                        <h6>Keranjang kosong</h6>
                                         {% endif %}
                             </div>
                                    
