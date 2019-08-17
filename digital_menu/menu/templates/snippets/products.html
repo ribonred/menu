@@ -1,5 +1,4 @@
 {% load static %}
-{% load crispy_forms_tags %}
 
 <div class="main mt-5">
     {% if messages %}
@@ -44,11 +43,11 @@
             <form action="{% url 'menu:addtocart' product.id %}" method="post" class="card-link">
                     {% csrf_token %}
                     <div class="form-inline mb-2">
-                        <select id="id_quantity"  class="form-control m-auto" style="width: 70px;" name="quantity">
-                            {% for selow in jumlah_form.quantity  %}
-                            {{selow}}
-                            {% endfor %}
-                     </select>
+                      <select id="id_quantity"  class="form-control m-auto" style="width: 70px;" name="quantity">
+                          {% for selow in jumlah_form.quantity  %}
+                          {{selow}}
+                          {% endfor %}
+                      </select>
                     </div>
                         <input class="btn btn-primary btn-sm mr-2" type="submit" value="Pesan">
                         <a href="#modelId" id="{{product.slug}}" class="btn btn-success btn-sm" data-toggle="modal" data-href="{{product.get_absolute_url}}">More Info</a>
@@ -62,17 +61,17 @@
 </div>
 <!-- Modal Product -->
 <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+    <div class="modal-dialog" role="document" style="min-width: 50%;">
+        <div class="modal-content" id="konten">
 
         </div>
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
   
   {% for a in  Product %}
   <script type="text/javascript">
@@ -80,7 +79,7 @@
       $('#{{a.slug}}').click(function(e) {
         e.preventDefault();
         var url = $(this).attr('data-href');
-        $('.modal-content').load(url);
+        $('#konten').load(url);
       });
     });
   </script>
