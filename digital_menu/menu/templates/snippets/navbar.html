@@ -61,17 +61,19 @@
                                         {% for item in cart %}
                                         {% with Product=item.Product %}
                                         <tr>
-                                        <th scope="row">{{ Product.id }}</th>
+                                        <th scope="row">{{ forloop.counter}}</th>
                                         <th>{{ Product.name }}</th>
                                         <th class="num">Rp {{ item.price }}</th>
                                         <th class="m-auto">
-                                        <a href="" class="badge badge-danger">    
-                                        <i class="fa fa-minus" aria-hidden="true"></i>
-                                        </a>
-                                        <input class="m-auto" style="width:40px;" type="text" value="{{ item.quantity }}"/>
-                                        <a href="" class="badge badge-success">    
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
-                                        </a>
+                                        <form action="{% url 'menu:addtocart' Product.id %}" method="post">
+
+                                                <input class="m-auto" style="width:40px;" type="text" name="quantity" id="{{Product.id}}" value="{{ item.quantity }}"/>
+                                                {{ item.quantity_form.update }} 
+                                              
+                                                <input type="submit" value="Update">
+                                            {% csrf_token %}
+                                        </form>
+                                       
                                         </th>
                                         <th class="num">Rp {{ item.total_price }}</th>
                                         <th><a href="/remove/{{Product.id}}/" class="badge badge-danger">remove</a></th>
@@ -94,8 +96,10 @@
                 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue Shopping</button>
-                <button type="button" class="btn btn-primary">Checkout</button>
+                <a type="button" class="btn btn-primary" href="{% url 'menu:createorder' %}">Checkout</a>
             </div>
         </div>
     </div>
 </div>
+
+    

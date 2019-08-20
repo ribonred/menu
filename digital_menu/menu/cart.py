@@ -16,7 +16,7 @@ class Cart(object):
         if update_quantity:
             self.cart[Product_id]['quantity'] = quantity
         else:
-            self.cart[Product_id]['quantity'] +=sum(quantity)
+            self.cart[Product_id]['quantity'] =+sum(quantity)
         self.save()
     def save(self):
         self.session.modified = True

@@ -2,14 +2,15 @@ from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404, reverse, redirect, render
 from django.views.decorators.http import require_POST
 from .cart import Cart
-from .forms import formtambahproduk
-from .models import product,Category
+from .forms import formtambahproduk, formupdateproduk, orderform
+from .models import product,Category, Order,OrderItem
 from django.contrib import messages
+from django.http import JsonResponse
 
 class productlist(ListView):
     template_name = "index.html"
     context_object_name = 'Product' #context temmplate
-    paginate_by = 2 #berapa object yang di tampilkan
+    paginate_by = 5 #berapa object yang di tampilkan
     
     def get_queryset(self):
         queryset = product.objects.all() #overide context dengan model product
@@ -22,6 +23,13 @@ class productlist(ListView):
         context['kategoris'] = Category.objects.all()  #penambahan model category
         context['jumlah_form'] = formtambahproduk()
         return context
+    def get(self, request, *args, **kwargs):
+        cart = Cart(request)
+        for item in cart:
+            item['quantity_form'] = formupdateproduk(
+            initial={'quantity': item['quantity'],
+            'update': True})
+        return super().get(request, *args, **kwargs)
     
 class produkdetail(DetailView):
     model = product
@@ -51,8 +59,19 @@ def cart_remove(request, Product_id):
     cart.remove(Product)
     return redirect('menu:home')
 
-
-def cart_detail(request):
+def create_order(request):
     cart = Cart(request)
-    return ({'cart':cart})
+    if request.method == 'POST':
+        form = orderform(request.POST)
+        if form.is_valid():
+            order = form.save()
+            for item in cart:
+                OrderItem.objects.create(order=order, Product=item['Product'], price=item['price'], quantity=item['quantity'])
+                cart.clear()
+                return render (request, 'createdorder.html', {'order':order})
+    else:
+        form = orderform()
+        return render(request, 'createorder.html', {'form':form})
+
+
 
