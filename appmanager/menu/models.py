@@ -3,10 +3,11 @@ from django.urls import reverse
 from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.conf import settings
-
+from appmanager.resto.models import Restaurant
 
 # kategori
 class Category(models.Model):
+    resto = models.ForeignKey(Restaurant,on_delete=models.CASCADE, related_name='resto_category')
     name =  models.CharField(
         max_length = 80,
         db_index = True,
@@ -28,6 +29,7 @@ class Category(models.Model):
     
 #model Product
 class product(models.Model):
+    resto = models.ForeignKey(Restaurant,on_delete=models.CASCADE, related_name='resto_products')
     category = models.ForeignKey(Category,
      related_name='products', 
      on_delete=models.CASCADE,
@@ -62,8 +64,11 @@ class Order(models.Model):
         ordering =('-created',)
     def __str__(self):
         return 'Order {}'.format(self.id)
+    
     def get_total_harga (self):
         return sum(item.get_cost() for item in self.item.all())
+
+
 #barang yang di order
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)

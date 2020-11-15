@@ -3,6 +3,7 @@ from appmanager.core.models import User, BaseTimeStampModel
 from appmanager.administrative.models import Province,City,Villages,District
 import base64
 import os
+from django.urls import reverse
 
 def generate_id():
     r_id = base64.b64encode(os.urandom(6)).decode('ascii')
@@ -29,7 +30,7 @@ class Restaurant(BaseTimeStampModel):
             failures = 0
             while not success:
                 try:
-                    super(User, self).save(*args, **kwargs)
+                    super(Restaurant, self).save(*args, **kwargs)
                 except IntegrityError:
                     failures += 1
                     if failures > 5:  # or some other arbitrary cutoff point at which things are clearly wrong
@@ -40,4 +41,40 @@ class Restaurant(BaseTimeStampModel):
                 else:
                     success = True
         else:
-            super(User, self).save(*args, **kwargs)
+            super(Restaurant, self).save(*args, **kwargs)
+
+
+class Table(BaseTimeStampModel):
+    uid = models.CharField(max_length=20,primary_key=True)
+    resto = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='resto_tables')
+    no_table = models.PositiveIntegerField()
+    is_used = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)
+    
+    
+    
+    def get_absolute_url(self):
+        url_slug = {'uid':self.uid,'restoid':self.resto.id}
+        return reverse("appmanager.resto:resto_url", kwargs=url_slug)
+    
+    
+    
+    def save(self, *args, **kwargs):
+        if not self.uid:
+            self.uid = generate_id()
+            success = False
+            failures = 0
+            while not success:
+                try:
+                    super(Table, self).save(*args, **kwargs)
+                except IntegrityError:
+                    failures += 1
+                    if failures > 5:  # or some other arbitrary cutoff point at which things are clearly wrong
+                        raise KeyError
+                    else:
+                        # looks like a collision, try another random value
+                        self.uid = generate_id()
+                else:
+                    success = True
+        else:
+            super(Table, self).save(*args, **kwargs)
