@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.conf import settings
-from appmanager.resto.models import Restaurant
+from appmanager.resto.models import Restaurant,Table
 
 # kategori
 class Category(models.Model):
@@ -28,10 +28,10 @@ class Category(models.Model):
         return reverse("appmanager.menu:product_category", kwargs=url_slug)
     
 #model Product
-class product(models.Model):
+class Product(models.Model):
     resto = models.ForeignKey(Restaurant,on_delete=models.CASCADE, related_name='resto_products')
     category = models.ForeignKey(Category,
-     related_name='products', 
+     related_name='products_category', 
      on_delete=models.CASCADE,
      null=True
      )
@@ -43,6 +43,8 @@ class product(models.Model):
     tersedia = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    
+    
     class Meta:
         ordering = ('name',)
         index_together = (('id','slug'),)
@@ -54,8 +56,8 @@ class product(models.Model):
 ##orderdetail
 
 class Order(models.Model):
+    table = models.ForeignKey(Table,on_delete=models.CASCADE,related_name='order_table')
     nama   = models.CharField(max_length=100)
-    no_tlp = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
@@ -72,7 +74,7 @@ class Order(models.Model):
 #barang yang di order
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    Product = models.ForeignKey(product, related_name='order_items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=12, decimal_places=0)
     quantity = models.PositiveIntegerField(default=1)
 
@@ -80,5 +82,5 @@ class OrderItem(models.Model):
         return '{}'.format(self.id)
     
     
-    def get_cost(self):
+    def total_cost(self):
         return self.price * self.quantity

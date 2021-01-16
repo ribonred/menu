@@ -12,4 +12,4 @@ class formupdateproduk(forms.Form):
 class orderform(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['nama', 'no_tlp']
+        fields = ['nama',]
